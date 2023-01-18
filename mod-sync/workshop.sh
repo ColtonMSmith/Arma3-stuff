@@ -3,10 +3,10 @@ set -e
 set -o pipefail
 home="/home/steam"
 cd "$home" || exit
-if [ -f "${home}/config.cfg" ]; then
+if [ -f "${home}/config.sh" ]; then
     # shellcheck source=config.cfg
     # shellcheck disable=SC1091
-    source "${home}/config.cfg"
+    source "${home}/config.sh"
 else
     printf "Please create %s, and set at least STEAMUSER and STEAMPASS \n" "${home}/config.cfg"
 fi
@@ -34,7 +34,7 @@ if [ ! -d "$home"/mods ]; then
         exit 1
     fi
 fi
-STEAMPASS_decrypted=$(echo "${STEAMPASS}" | openssl enc -a -d -aes-256-cbc -md md5 -pass pass:"${CRYPTKEY}")
+STEAMPASS_decrypted=#PASSWD
 for workshop_item in "${WS_IDS[@]}"; do
     modname="$(curl -s https://steamcommunity.com/sharedfiles/filedetails/?id="${workshop_item}" | grep "<title>" | sed -e 's/<[^>]*>//g' | cut -d ' ' -f 4-)"
     modname_clean=$(echo "$modname" | dos2unix)
